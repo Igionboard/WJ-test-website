@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wyjeb To — trening personalny</title>
+  <meta name="description" content="Trening personalny na siłowni. 5 lat doświadczenia w prowadzeniu podopiecznych." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:   { DEFAULT: '#14110F', 2: '#1C1815', 3: '#26201C', 4: '#332B25' },
+            bone:  { DEFAULT: '#F2EDE4', dim: '#B9B0A4', mute: '#7D746A' },
+            ember: { DEFAULT: '#E8501C', hi: '#FF6A33', lo: '#B63A10', glow: '#E8501C' },
+          },
+          fontFamily: {
+            display: ['Anton', 'Impact', 'sans-serif'],
+            sans: ['Manrope', 'system-ui', 'sans-serif'],
+          },
+          spacing: {
+            // spacing tokens: s1 4, s2 8, s3 16, s4 24, s5 40, s6 64, s7 104, s8 160
+            s1: '4px', s2: '8px', s3: '16px', s4: '24px', s5: '40px', s6: '64px', s7: '104px', s8: '160px',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --out: cubic-bezier(0.22, 1, 0.36, 1);
+      --shadow-elev: 0 1px 2px rgba(232, 80, 28, 0.06), 0 8px 24px -8px rgba(20, 8, 2, 0.55), 0 24px 48px -24px rgba(232, 80, 28, 0.18);
+      --shadow-float: 0 2px 4px rgba(232, 80, 28, 0.10), 0 16px 40px -12px rgba(20, 8, 2, 0.7), 0 40px 80px -32px rgba(232, 80, 28, 0.35);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: #14110F; color: #F2EDE4; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    .h-tight { letter-spacing: -0.03em; line-height: 0.92; }
+    .grain::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.09; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .glow-bg {
+      background:
+        radial-gradient(60% 50% at 85% 10%, rgba(232, 80, 28, 0.28) 0%, transparent 60%),
+        radial-gradient(45% 40% at 10% 90%, rgba(182, 58, 16, 0.22) 0%, transparent 65%),
+        radial-gradient(80% 60% at 50% 50%, rgba(51, 43, 37, 0.6) 0%, transparent 70%),
+        #14110F;
+    }
+    .elev  { box-shadow: var(--shadow-elev); }
+    .float { box-shadow: var(--shadow-float); }
+
+    /* interactive: only transform + opacity */
+    .btn { transition: transform 420ms var(--spring), opacity 200ms var(--out); }
+    .btn:hover { transform: translateY(-3px) scale(1.02); }
+    .btn:active { transform: translateY(1px) scale(0.97); transition-duration: 120ms; }
+    .btn .arrow { display: inline-block; transition: transform 420ms var(--spring); }
+    .btn:hover .arrow { transform: translateX(5px); }
+    .lift { transition: transform 520ms var(--spring); }
+    .lift:hover { transform: translateY(-6px); }
+    .lift:active { transform: translateY(-2px) scale(0.99); }
+    .navlink { position: relative; transition: opacity 200ms var(--out); opacity: .75; }
+    .navlink::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: #E8501C; transform: scaleX(0); transform-origin: left; transition: transform 380ms var(--spring); }
+    .navlink:hover, .navlink:focus-visible { opacity: 1; }
+    .navlink:hover::after, .navlink:focus-visible::after { transform: scaleX(1); }
+    .navlink:active { opacity: .6; }
+    :focus-visible { outline: 2px solid #FF6A33; outline-offset: 4px; border-radius: 6px; }
+    .img-zoom img { transition: transform 900ms var(--out); }
+    .img-zoom:hover img { transform: scale(1.05); }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 700ms var(--out), transform 900ms var(--spring); }
+    .reveal.in { opacity: 1; transform: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details .plus { transition: transform 380ms var(--spring); }
+    details[open] .plus { transform: rotate(45deg); }
+    .marquee { animation: marquee 28s linear infinite; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; }
+      .marquee { animation: none; }
+      * { transition-duration: 0ms !important; }
+    }
+  </style>
+</head>
+<body class="font-sans">
+
+  <!-- NAV (floating layer) -->
+  <header class="fixed inset-x-0 top-0 z-50 px-s3 pt-s3 md:px-s5">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/10 bg-ink-2/80 px-s4 py-s2 backdrop-blur-md float" aria-label="Główna nawigacja">
+      <a href="#" class="btn font-display text-2xl uppercase tracking-wide text-bone">Wyjeb<span class="text-ember"> To</span></a>
+      <div class="hidden items-center gap-s5 text-sm font-semibold md:flex">
+        <a href="#o-mnie" class="navlink">O mnie</a>
+        <a href="#oferta" class="navlink">Oferta</a>
+        <a href="#wspolpraca" class="navlink">Jak to działa</a>
+        <a href="#faq" class="navlink">FAQ</a>
+      </div>
+      <a href="#kontakt" class="btn hidden rounded-full bg-ember px-s4 py-s2 text-sm font-bold text-ink hover:bg-ember-hi active:bg-ember-lo md:inline-block">Umów trening</a>
+      <button id="menuBtn" class="btn rounded-full border border-white/15 px-s3 py-s2 text-sm font-bold md:hidden" aria-expanded="false" aria-controls="mobileMenu">Menu</button>
+    </nav>
+    <div id="mobileMenu" class="mx-auto mt-s2 hidden max-w-6xl rounded-3xl border border-white/10 bg-ink-2/95 p-s4 backdrop-blur-md float md:hidden">
+      <div class="flex flex-col gap-s3 text-lg font-semibold">
+        <a href="#o-mnie" class="navlink self-start">O mnie</a>
+        <a href="#oferta" class="navlink self-start">Oferta</a>
+        <a href="#wspolpraca" class="navlink self-start">Jak to działa</a>
+        <a href="#faq" class="navlink self-start">FAQ</a>
+        <a href="#kontakt" class="btn mt-s2 rounded-full bg-ember px-s4 py-s3 text-center font-bold text-ink active:bg-ember-lo">Umów trening</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="glow-bg grain relative overflow-hidden px-s3 pb-s6 pt-s8 md:px-s5 md:pb-s7">
+      <div class="relative z-10 mx-auto grid max-w-6xl items-end gap-s5 md:grid-cols-12">
+        <div class="md:col-span-7">
+          <p class="mb-s4 inline-flex items-center gap-s2 rounded-full border border-ember/40 bg-ember/10 px-s3 py-s1 text-xs font-bold uppercase tracking-[0.18em] text-ember-hi">
+            <span class="h-2 w-2 rounded-full bg-ember"></span> Trener personalny · 5 lat na sali
+          </p>
+          <h1 class="font-display h-tight text-[clamp(4rem,14vw,9.5rem)] uppercase">
+            Wyjeb<br />to z <span class="text-ember">głowy.</span>
+          </h1>
+          <p class="mt-s4 max-w-xl text-lg text-bone-dim">
+            Wymówki, plany od poniedziałku, trening na czuja. Przychodzisz na siłownię, robisz robotę, a ja pilnuję, żeby każdy trening miał sens i dawał wynik.
+          </p>
+          <div class="mt-s5 flex flex-wrap gap-s3">
+            <a href="#kontakt" class="btn rounded-full bg-ember px-s5 py-s3 font-bold text-ink elev hover:bg-ember-hi active:bg-ember-lo">Pierwszy trening <span class="arrow">→</span></a>
+            <a href="#oferta" class="btn rounded-full border border-white/20 px-s5 py-s3 font-bold text-bone hover:border-white/40 hover:bg-white/5 active:bg-white/10">Zobacz ofertę</a>
+          </div>
+        </div>
+        <div class="relative md:col-span-5">
+          <div class="img-zoom relative aspect-[4/5] overflow-hidden rounded-[28px] float">
+            <img src="https://placehold.co/800x1000/26201C/7D746A?text=Zdj%C4%99cie+trenera" alt="Trener na siłowni" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-ember-lo/40 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+            <div class="absolute bottom-s4 left-s4 right-s4 flex items-end justify-between">
+              <div>
+                <p class="font-display text-5xl leading-none">5 lat</p>
+                <p class="text-sm font-semibold text-bone-dim">prowadzenia ludzi na siłowni</p>
+              </div>
+            </div>
+          </div>
+          <!-- floating badge -->
+          <div class="absolute -left-s6 top-s6 hidden rounded-2xl border border-white/10 bg-ink-3 px-s4 py-s3 float md:block">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-bone-mute">Trening</p>
+            <p class="font-display text-2xl uppercase">1 na 1</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="overflow-hidden border-y border-white/10 bg-ember py-s3 text-ink" aria-hidden="true">
+      <div class="marquee flex w-max gap-s5 whitespace-nowrap font-display text-2xl uppercase">
+        <span>Siła</span><span class="opacity-40">/</span><span>Technika</span><span class="opacity-40">/</span><span>Redukcja</span><span class="opacity-40">/</span><span>Masa</span><span class="opacity-40">/</span><span>Regularność</span><span class="opacity-40">/</span><span>Bez wymówek</span><span class="opacity-40">/</span>
+        <span>Siła</span><span class="opacity-40">/</span><span>Technika</span><span class="opacity-40">/</span><span>Redukcja</span><span class="opacity-40">/</span><span>Masa</span><span class="opacity-40">/</span><span>Regularność</span><span class="opacity-40">/</span><span>Bez wymówek</span><span class="opacity-40">/</span>
+      </div>
+    </div>
+
+    <!-- O MNIE -->
+    <section id="o-mnie" class="px-s3 py-s7 md:px-s5">
+      <div class="mx-auto grid max-w-6xl gap-s5 md:grid-cols-12 md:gap-s6">
+        <div class="reveal md:col-span-5">
+          <div class="img-zoom relative aspect-square overflow-hidden rounded-[28px] elev">
+            <img src="https://placehold.co/900x900/26201C/7D746A?text=Trening+na+sali" alt="Trening z podopiecznym" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-ember-lo/35 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          </div>
+        </div>
+        <div class="reveal md:col-span-7 md:pt-s5">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">O mnie</p>
+          <h2 class="font-display h-tight mt-s3 text-[clamp(2.75rem,7vw,5rem)] uppercase">Pięć lat. Setki godzin na sali.</h2>
+          <p class="mt-s4 text-lg text-bone-dim">
+            Od pięciu lat prowadzę ludzi na siłowni: od kompletnych początkujących po osoby, które chcą wycisnąć więcej ze swoich treningów. Nie sprzedaję cudów w 30 dni. Daję plan, technikę i kogoś, kto stoi obok i nie pozwoli Ci odpuścić.
+          </p>
+          <div class="mt-s5 grid grid-cols-1 gap-s3 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/10 bg-ink-2 p-s4 elev">
+              <p class="font-display text-4xl text-ember">5</p>
+              <p class="mt-s1 text-sm font-semibold text-bone-dim">lat doświadczenia</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-ink-2 p-s4 elev">
+              <p class="font-display text-4xl text-ember">1:1</p>
+              <p class="mt-s1 text-sm font-semibold text-bone-dim">pełna uwaga na Tobie</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-ink-2 p-s4 elev">
+              <p class="font-display text-4xl text-ember">100%</p>
+              <p class="mt-s1 text-sm font-semibold text-bone-dim">plan pod Twój cel</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFERTA -->
+    <section id="oferta" class="relative overflow-hidden bg-ink-2 px-s3 py-s7 md:px-s5">
+      <div class="mx-auto max-w-6xl">
+        <div class="reveal max-w-2xl">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Oferta</p>
+          <h2 class="font-display h-tight mt-s3 text-[clamp(2.75rem,7vw,5rem)] uppercase">Wybierz, jak chcesz pracować.</h2>
+        </div>
+        <div class="mt-s6 grid gap-s4 md:grid-cols-3">
+          <article class="reveal lift flex flex-col rounded-[28px] border border-white/10 bg-ink-3 p-s5 elev">
+            <h3 class="font-display text-3xl uppercase">Trening próbny</h3>
+            <p class="mt-s2 text-bone-dim">Poznajemy się, sprawdzam Twoją technikę i ustalamy cel.</p>
+            <ul class="mt-s4 space-y-s2 text-sm font-semibold">
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Rozmowa o celu</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Ocena techniki</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Pierwszy trening</li>
+            </ul>
+            <p class="mt-auto pt-s5 font-display text-4xl">[cena] zł</p>
+            <a href="#kontakt" class="btn mt-s4 rounded-full border border-white/20 px-s4 py-s3 text-center font-bold hover:border-white/40 hover:bg-white/5 active:bg-white/10">Umów się</a>
+          </article>
+          <article class="reveal lift relative flex flex-col rounded-[28px] border border-ember/60 bg-gradient-to-b from-ember/20 to-ink-3 p-s5 float md:-translate-y-s4">
+            <span class="absolute -top-s3 left-s5 rounded-full bg-ember px-s3 py-s1 text-xs font-bold uppercase tracking-[0.14em] text-ink">Najczęściej wybierany</span>
+            <h3 class="font-display text-3xl uppercase">Pakiet 1:1</h3>
+            <p class="mt-s2 text-bone-dim">Regularne treningi personalne na siłowni, krok po kroku do celu.</p>
+            <ul class="mt-s4 space-y-s2 text-sm font-semibold">
+              <li class="flex gap-s2"><span class="text-ember">✓</span> [liczba] treningów w miesiącu</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Plan treningowy</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Kontrola postępów</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Kontakt między treningami</li>
+            </ul>
+            <p class="mt-auto pt-s5 font-display text-4xl">[cena] zł<span class="font-sans text-base font-semibold text-bone-dim"> / mies.</span></p>
+            <a href="#kontakt" class="btn mt-s4 rounded-full bg-ember px-s4 py-s3 text-center font-bold text-ink hover:bg-ember-hi active:bg-ember-lo">Zaczynam <span class="arrow">→</span></a>
+          </article>
+          <article class="reveal lift flex flex-col rounded-[28px] border border-white/10 bg-ink-3 p-s5 elev">
+            <h3 class="font-display text-3xl uppercase">Prowadzenie online</h3>
+            <p class="mt-s2 text-bone-dim">Trenujesz sam, ja układam plan i sprawdzam postępy zdalnie.</p>
+            <ul class="mt-s4 space-y-s2 text-sm font-semibold">
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Plan na każdy tydzień</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Analiza nagrań techniki</li>
+              <li class="flex gap-s2"><span class="text-ember">✓</span> Cotygodniowe podsumowanie</li>
+            </ul>
+            <p class="mt-auto pt-s5 font-display text-4xl">[cena] zł<span class="font-sans text-base font-semibold text-bone-dim"> / mies.</span></p>
+            <a href="#kontakt" class="btn mt-s4 rounded-full border border-white/20 px-s4 py-s3 text-center font-bold hover:border-white/40 hover:bg-white/5 active:bg-white/10">Zapytaj</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- JAK TO DZIAŁA -->
+    <section id="wspolpraca" class="px-s3 py-s7 md:px-s5">
+      <div class="mx-auto max-w-6xl">
+        <div class="reveal max-w-2xl">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Jak to działa</p>
+          <h2 class="font-display h-tight mt-s3 text-[clamp(2.75rem,7vw,5rem)] uppercase">Trzy kroki. Zero ściemy.</h2>
+        </div>
+        <ol class="mt-s6 grid gap-s4 md:grid-cols-3">
+          <li class="reveal border-t-2 border-ember pt-s4">
+            <p class="font-display text-6xl text-ember/80">01</p>
+            <h3 class="mt-s3 text-xl font-extrabold">Piszesz albo dzwonisz</h3>
+            <p class="mt-s2 text-bone-dim">Mówisz, co chcesz osiągnąć i ile masz czasu. Umawiamy pierwszy trening.</p>
+          </li>
+          <li class="reveal border-t-2 border-ember pt-s4">
+            <p class="font-display text-6xl text-ember/80">02</p>
+            <h3 class="mt-s3 text-xl font-extrabold">Sprawdzam, gdzie jesteś</h3>
+            <p class="mt-s2 text-bone-dim">Na sali widzę Twoją technikę i formę. Na tej podstawie układam plan.</p>
+          </li>
+          <li class="reveal border-t-2 border-ember pt-s4">
+            <p class="font-display text-6xl text-ember/80">03</p>
+            <h3 class="mt-s3 text-xl font-extrabold">Robimy robotę</h3>
+            <p class="mt-s2 text-bone-dim">Trenujemy regularnie, mierzymy postępy i poprawiamy plan, gdy trzeba.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="bg-ink-2 px-s3 py-s7 md:px-s5">
+      <div class="mx-auto grid max-w-6xl gap-s5 md:grid-cols-12">
+        <div class="reveal md:col-span-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">FAQ</p>
+          <h2 class="font-display h-tight mt-s3 text-[clamp(2.75rem,7vw,5rem)] uppercase">Pytania</h2>
+        </div>
+        <div class="reveal space-y-s3 md:col-span-8">
+          <details class="group rounded-2xl border border-white/10 bg-ink-3 elev">
+            <summary class="btn flex cursor-pointer items-center justify-between gap-s3 p-s4 text-lg font-bold hover:opacity-90 active:opacity-70">Nigdy nie ćwiczyłem. Dam radę?<span class="plus text-2xl text-ember">+</span></summary>
+            <p class="px-s4 pb-s4 text-bone-dim">Tak. Zaczynamy od Twojego poziomu, uczymy się techniki i dopiero potem dokładamy ciężaru.</p>
+          </details>
+          <details class="group rounded-2xl border border-white/10 bg-ink-3 elev">
+            <summary class="btn flex cursor-pointer items-center justify-between gap-s3 p-s4 text-lg font-bold hover:opacity-90 active:opacity-70">Gdzie odbywają się treningi?<span class="plus text-2xl text-ember">+</span></summary>
+            <p class="px-s4 pb-s4 text-bone-dim">Na siłowni [nazwa i adres siłowni]. Wejście na siłownię opłacasz osobno.</p>
+          </details>
+          <details class="group rounded-2xl border border-white/10 bg-ink-3 elev">
+            <summary class="btn flex cursor-pointer items-center justify-between gap-s3 p-s4 text-lg font-bold hover:opacity-90 active:opacity-70">Ile razy w tygodniu trzeba trenować?<span class="plus text-2xl text-ember">+</span></summary>
+            <p class="px-s4 pb-s4 text-bone-dim">Zależy od celu i Twojego czasu. Najczęściej 2–3 razy w tygodniu, ale ustalamy to razem.</p>
+          </details>
+          <details class="group rounded-2xl border border-white/10 bg-ink-3 elev">
+            <summary class="btn flex cursor-pointer items-center justify-between gap-s3 p-s4 text-lg font-bold hover:opacity-90 active:opacity-70">Pomożesz też z dietą?<span class="plus text-2xl text-ember">+</span></summary>
+            <p class="px-s4 pb-s4 text-bone-dim">Dostajesz wskazówki żywieniowe pod Twój cel. [Uzupełnij, jeśli trener prowadzi pełną dietę.]</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section id="kontakt" class="glow-bg grain relative overflow-hidden px-s3 py-s7 md:px-s5">
+      <div class="reveal relative z-10 mx-auto max-w-4xl text-center">
+        <h2 class="font-display h-tight text-[clamp(3.5rem,11vw,8rem)] uppercase">Koniec gadania.<br /><span class="text-ember">Trenujemy.</span></h2>
+        <p class="mx-auto mt-s4 max-w-xl text-lg text-bone-dim">Napisz albo zadzwoń. Odpowiadam osobiście i umawiamy pierwszy trening.</p>
+        <div class="mt-s5 flex flex-col items-center justify-center gap-s3 sm:flex-row">
+          <a href="tel:+48000000000" class="btn w-full rounded-full bg-ember px-s5 py-s3 font-bold text-ink float hover:bg-ember-hi active:bg-ember-lo sm:w-auto">Zadzwoń: [numer telefonu]</a>
+          <a href="mailto:kontakt@example.com" class="btn w-full rounded-full border border-white/20 px-s5 py-s3 font-bold hover:border-white/40 hover:bg-white/5 active:bg-white/10 sm:w-auto">Napisz maila <span class="arrow">→</span></a>
+        </div>
+        <div class="mt-s5 flex justify-center gap-s4 text-sm font-semibold">
+          <a href="#" class="navlink">Instagram</a>
+          <a href="#" class="navlink">Facebook</a>
+          <a href="#" class="navlink">TikTok</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 px-s3 py-s5 md:px-s5">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-s3 text-sm text-bone-mute sm:flex-row">
+      <p class="font-display text-xl uppercase text-bone">Wyjeb<span class="text-ember"> To</span></p>
+      <p>© 2026 Wyjeb To. Trening personalny.</p>
+    </div>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    btn.addEventListener('click', () => {
+      const open = menu.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', open);
+      btn.textContent = open ? 'Zamknij' : 'Menu';
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      menu.classList.add('hidden'); btn.setAttribute('aria-expanded', false); btn.textContent = 'Menu';
+    }));
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
